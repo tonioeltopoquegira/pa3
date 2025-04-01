@@ -16,11 +16,10 @@ void apsp(int n, std::vector<std::pair<std::pair<int, int>, int>> &graph,
     while (max_iter<n){
         std::vector<std::pair<std::pair<int,int>, int>> L_tmp = std::move(L);
         spgemm_2d(n,n,n,L_tmp,L_tmp,L,
-                  // TODO: Choose operation here
+                  // semiring to substitute addition
                   [](int a, int b){ return a + b; },  
-                  // TODO: Choose operation here
-                  [](int a, int b){ return std::min(a, b); }, // The procedure EXTEND-SHORTEST-PATHS uses another semiring,
-                   // known as the tropical semiring, with min for ˚, C for ˝, 1 for I ˚ , and 0 for I ˝ .
+                  // semiring to substitute multiplication
+                  [](int a, int b){ return std::min(a, b); }, // 
                   row_comm, col_comm);
         max_iter*=2;
     }
